@@ -48,7 +48,7 @@ var isAcceptable = function(project){
     _id: Match.Optional(nonEmptyString)
   });
 
-  if (project.name.length > 3)
+  if (project.name.length > 64)
     throw new Meteor.Error(413, "Name too long");
   if (! Meteor.user())
     throw new Meteor.Error(403, "You must be logged in");
