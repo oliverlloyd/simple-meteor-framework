@@ -1,0 +1,17 @@
+<!-- 
+  See router.js. A subscription to all (allowed) projects in the db is made when the
+  /projects route is called and this template is rendered using the result of 
+  that query/subscription.
+  The data changes live in response to any data changes in the db.
+-->
+<template name="projects">
+  <h3>Projects: </h3>
+  <ul>
+    {{#each projects}}
+      <li><a href="{{pathFor "project"}}">{{name}}</a></li>
+      <button class="projects remove">Delete</button>
+    {{/each}}
+  </ul>
+  <input type="text" class="name" placeholder="my project">
+  <button class="projects create">Create</button>
+</template>
