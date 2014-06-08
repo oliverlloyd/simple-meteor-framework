@@ -6,5 +6,10 @@
 standard-app-packages
 iron-router
 accounts-password
-accounts-ui
 audit-argument-checks
+semantic-ui
+less
+collection-hooks
+fast-render
+accounts-ui
+moment

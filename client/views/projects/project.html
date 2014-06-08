@@ -5,12 +5,15 @@
   The data changes live in response to any data changes in the db.
 -->
 <template name="project">
-  <a href="{{pathFor 'projects'}}">← Back</a>
-  {{#with project}}
-    <div class="project">
-      <h3>{{name}}</h3>
-      <p>{{body}}</p>
-      <h5><a href="#" class="delete">Delete</a></h5>
+  <div class="one column row">
+    <div class="column">
+      <a href="{{pathFor 'projects'}}">← Back</a>
+      {{#with project}}
+        <div class="project">
+          <h3>{{name}}</h3>
+          <h5><a href="#" class="delete">Delete</a></h5>
+        </div>
+      {{/with}}
     </div>
-  {{/with}}
+  </div>
 </template>

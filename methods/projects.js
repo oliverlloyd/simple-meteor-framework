@@ -6,6 +6,22 @@ These are called by the client using Meteor.call()
 
 They are where the crud work is done
 
+Sending EMail - http://www.keysolutions.com/blogs/kenyee.nsf/d6plinks/KKYE-94VUVQ
+Sending email notifications is an important part of any web application and that's easy to do with 
+Meteor's authenticationed SMTP client support. You can use MailGun (default) or Gmail as the 
+servers to send mail through. Once you've configured which server to send email through, sending 
+it is a fairly simple function call:
+
+  Email.send({
+    from: fromEmail,
+    to: toEmail,
+    replyTo: fromEmail || undefined,
+    subject: from.username + " sent you this email !",
+    text: "Hello " + to.username + ",\n\n" + msg +
+    "Thank you for using our site!\n\n" +
+    Meteor.absoluteUrl()+"\n";
+  });
+
 /+ ---------------------------------------------------- */
 
 
@@ -16,7 +32,7 @@ Meteor.methods({
       var id = Projects.insert(project);
       return id;
     } else {
-      throw new Meteor.Error(403, 'You do not have the rights to create this project.');
+      throw new Meteor.Error(403, 'You do not have permission to create this project.');
     }
   },
   removeProject: function(project) {
@@ -24,7 +40,7 @@ Meteor.methods({
     if( allowedTo.removeProject(Meteor.user(), project) ){
       Projects.remove({_id: project._id});
     } else {
-      throw new Meteor.Error(403, 'You do not have the rights to delete this project.');
+      throw new Meteor.Error(403, 'You do not have permission to delete this project.');
     }
   },
   updateProject: function(project, fields) {
@@ -35,7 +51,7 @@ Meteor.methods({
     if( allowedTo.updateProject(Meteor.user(), project) ){
       Projects.update(project, {$set: fields});
     } else {
-      throw new Meteor.Error(403, 'You do not have the rights to update this project.');
+      throw new Meteor.Error(403, 'You do not have permission to update this project.');
     }
   }
 });
@@ -44,12 +60,17 @@ Meteor.methods({
 var isAcceptable = function(project){
   check(project, {
     name: nonEmptyString,
+    description: Match.Optional(String),
     public: Match.Optional(Boolean),
+    complete: Match.Optional(Boolean),
+    num: Number,
     _id: Match.Optional(nonEmptyString)
   });
 
-  if (project.name.length > 64)
+  if (project.name.length > 64 )
     throw new Meteor.Error(413, "Name too long");
+  if ( project.name.length < 3 )
+    throw new Meteor.Error(413, "Name too short, it should be greater than 3 characters");
   if (! Meteor.user())
     throw new Meteor.Error(403, "You must be logged in");
   else 

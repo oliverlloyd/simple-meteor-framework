@@ -5,6 +5,19 @@
 Code related to the project template
 
 /+ ---------------------------------------------------- */
+Router.map(function() {
+  this.route('project', {
+    path: '/projects/:_id',
+    waitOn: function () {
+      return Meteor.subscribe('aProject', this.params._id);
+    },
+    data: function () {
+      return {
+        project: Projects.findOne(this.params._id)
+      };
+    }
+  });
+});
 
 Template.project.created = function () {
   //
