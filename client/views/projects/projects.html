@@ -8,10 +8,10 @@
   
   <div class="three column row">
     <div class="column">
-      <div class="ui basic button goto-createproject">Create New Project</div>
+      <div class="project count">{{countOfProjects}}</div>
     </div>
     <div class="column">
-      <div class="project count">{{countOfProjects}}</div>
+      <div class="ui teal button goto-createproject">Create New Project</div>
     </div>
     <div class="column">
       <div class="ui icon input project-filter">
@@ -21,18 +21,6 @@
     </div>
   </div>
 
-  <div class="one column row">
-    <div class="column">
-      <div class="ui icon buttons floated right">
-        <div id="tenButton" class="{{isTenActive}} tableLimit ui tiny button">2</div>
-        <div id="twentyButton" class="{{isTwentyActive}} tableLimit ui tiny button">4</div>
-        <div id="fiftyButton" class="{{isFiftyActive}} tableLimit ui tiny button">6</div>
-        <div id="hundredButton" class="{{isHundredActive}} tableLimit ui tiny button">12</div>
-      </div>
-    </div>
-  </div>
-
-
   {{#each projects}}
     <div class="one column row">
       <div class="column">    
@@ -41,7 +29,7 @@
     </div>
   {{/each}}
   
-  <div class="one column row">
+  <div class="two column row">
     <div class="column"> 
       <div class="ui pagination menu">
       {{#each paginationItems }}
@@ -49,11 +37,19 @@
       {{/each}}
       </div>
     </div>
+    <div class="column">
+      <div class="ui pagination menu floated right">
+        <a id="tenButton" class="{{isTenActive}} tableLimit pagination small item">2</a>
+        <a id="twentyButton" class="{{isTwentyActive}} tableLimit pagination small item">4</a>
+        <a id="fiftyButton" class="{{isFiftyActive}} tableLimit pagination small item">6</a>
+        <a id="hundredButton" class="{{isHundredActive}} tableLimit pagination small item">12</a>
+      </div>
+    </div>    
   </div>
 </template>
 
 <template name="paginationItem">
-  <a class="{{pageActive}} pagination small item">{{getPage}}</a>
+  <a class="{{pageActive}} pages pagination small item">{{getPage}}</a>
 </template>
 
 <template name="projectItem">
