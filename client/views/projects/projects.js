@@ -7,7 +7,7 @@ Code related to the projects template
 /+ ---------------------------------------------------- */
 
 Session.setDefault('projectFilter', '');
-Session.setDefault('tableLimit', 2);
+Session.setDefault('tableLimit', 10);
 Session.setDefault('paginationCount', 1);
 Session.setDefault('selectedPagination', 0);
 Session.setDefault('skipCount', 0);
@@ -58,26 +58,26 @@ Template.projects.helpers({
       return [];
     }
   },
-  isTenActive: function(){
-    if(Session.get('tableLimit') === 2){
-      return "active";
-    }
-  },
-  isTwentyActive: function(){
-    if(Session.get('tableLimit') === 4){
-      return "active";
-    }
-  },
-  isFiftyActive: function(){
-    if(Session.get('tableLimit') === 6){
-      return "active";
-    }
-  },
-  isHundredActive: function(){
-    if(Session.get('tableLimit') === 12){
-      return "active";
-    }
-  },
+  // isTenActive: function(){
+  //   if(Session.get('tableLimit') === 2){
+  //     return "active";
+  //   }
+  // },
+  // isTwentyActive: function(){
+  //   if(Session.get('tableLimit') === 4){
+  //     return "active";
+  //   }
+  // },
+  // isFiftyActive: function(){
+  //   if(Session.get('tableLimit') === 6){
+  //     return "active";
+  //   }
+  // },
+  // isHundredActive: function(){
+  //   if(Session.get('tableLimit') === 12){
+  //     return "active";
+  //   }
+  // },
   countOfProjects: function(){
     var count = Projects.find().count();
     var msg = 'You have access to ' + count;
@@ -123,28 +123,28 @@ Template.projects.events({
     Session.set('skipCount', 0);
     Session.set('selectedPagination', 0);
   },
-  'click .tableLimit':function(){
-    // The value of the item clicked upon
-    var thisLimit = $(event.target).text();
-    // We only need to reset when the limit has actiually changed
-    if ( Session.get('tableLimit') != thisLimit ) { // Note. Don't use !== here as the types are different. string vs. number
-      Session.set('skipCount', 0);
-      Session.set('selectedPagination', 0);
-    }
-  },
-  'click #tenButton':function(){
-    Session.set('tableLimit', 2);
-  },
-  'click #twentyButton':function(){
-    Session.set('tableLimit', 4);
-  },
-  'click #fiftyButton': function(){
-    Session.set('tableLimit', 6);
-  },
-  'click #hundredButton': function(){
-    Session.set('tableLimit', 12);
-  },
-  'click .pages.pagination.item':function(){
+  // 'click .tableLimit':function(){
+  //   // The value of the item clicked upon
+  //   var thisLimit = $(event.target).text();
+  //   // We only need to reset when the limit has actiually changed
+  //   if ( Session.get('tableLimit') != thisLimit ) { // Note. Don't use !== here as the types are different. string vs. number
+  //     Session.set('skipCount', 0);
+  //     Session.set('selectedPagination', 0);
+  //   }
+  // },
+  // 'click #tenButton':function(){
+  //   Session.set('tableLimit', 2);
+  // },
+  // 'click #twentyButton':function(){
+  //   Session.set('tableLimit', 4);
+  // },
+  // 'click #fiftyButton': function(){
+  //   Session.set('tableLimit', 6);
+  // },
+  // 'click #hundredButton': function(){
+  //   Session.set('tableLimit', 12);
+  // },
+  'click .pagination.item':function(){
     Session.set('selectedPagination', this.index);
     Session.set('skipCount', this.index * Session.get('tableLimit'));
   },

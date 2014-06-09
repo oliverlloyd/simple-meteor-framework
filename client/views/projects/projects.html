@@ -29,7 +29,7 @@
     </div>
   {{/each}}
   
-  <div class="two column row">
+  <div class="one column row">
     <div class="column"> 
       <div class="ui pagination menu">
       {{#each paginationItems }}
@@ -37,19 +37,19 @@
       {{/each}}
       </div>
     </div>
-    <div class="column">
+<!--     <div class="column">
       <div class="ui pagination menu floated right">
         <a id="tenButton" class="{{isTenActive}} tableLimit pagination small item">2</a>
         <a id="twentyButton" class="{{isTwentyActive}} tableLimit pagination small item">4</a>
         <a id="fiftyButton" class="{{isFiftyActive}} tableLimit pagination small item">6</a>
         <a id="hundredButton" class="{{isHundredActive}} tableLimit pagination small item">12</a>
       </div>
-    </div>    
+    </div>   -->  
   </div>
 </template>
 
 <template name="paginationItem">
-  <a class="{{pageActive}} pages pagination small item">{{getPage}}</a>
+  <a class="{{pageActive}} pagination small item">{{getPage}}</a>
 </template>
 
 <template name="projectItem">
