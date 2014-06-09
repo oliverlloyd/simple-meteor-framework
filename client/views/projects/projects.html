@@ -5,11 +5,8 @@
   The data changes live in response to any data changes in the db and in response to pagination.
 -->
 <template name="projects">
-  
-  <div class="three column row">
-    <div class="column">
-      <div class="project count">{{countOfProjects}}</div>
-    </div>
+
+  <div class="two column row">
     <div class="column">
       <div class="ui teal button goto-createproject">Create New Project</div>
     </div>
@@ -18,6 +15,12 @@
         <input id="projectFilter"  type="text" placeholder="Search for a project">
         <i class="search icon"></i>
       </div>
+    </div>
+  </div>
+
+  <div class="one column row">
+    <div class="column">
+      <div class="project count">{{countOfProjects}}</div>
     </div>
   </div>
 
@@ -30,26 +33,24 @@
   {{/each}}
   
   <div class="one column row">
-    <div class="column"> 
-      <div class="ui pagination menu">
-      {{#each paginationItems }}
-        {{> paginationItem }}
-      {{/each}}
+    <div class="column">
+      <div class="{{isPaginationVisible}} ui pagination menu">
+        <a class="{{isLeftArrowDisabled}} left pagination arrow item">
+          <i class="left arrow icon"></i>
+        </a>
+        {{#each paginationItems }}
+          {{> paginationItem }}
+        {{/each}}
+        <a class="{{isRightArrowDisabled}} right pagination arrow item">
+          <i class="right arrow icon"></i>
+        </a>
       </div>
     </div>
-<!--     <div class="column">
-      <div class="ui pagination menu floated right">
-        <a id="tenButton" class="{{isTenActive}} tableLimit pagination small item">2</a>
-        <a id="twentyButton" class="{{isTwentyActive}} tableLimit pagination small item">4</a>
-        <a id="fiftyButton" class="{{isFiftyActive}} tableLimit pagination small item">6</a>
-        <a id="hundredButton" class="{{isHundredActive}} tableLimit pagination small item">12</a>
-      </div>
-    </div>   -->  
   </div>
 </template>
 
 <template name="paginationItem">
-  <a class="{{pageActive}} pagination small item">{{getPage}}</a>
+  <a class="{{pageActive}} pagination number small item">{{getPage}}</a>
 </template>
 
 <template name="projectItem">

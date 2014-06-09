@@ -8,23 +8,46 @@ will mysteriously refresh. Note also that a jQuery selector is used for the seco
 this means that if you have two buttons with the class "someclass" on them, the event will be assigned to 
 both of them (this is usually used for the cancel event of a dialog).
 
-The helpers() are where you declare variables you want to use on the templates. E.g., in the example above, 
-if you put "{{somevariable}}" on your template, the returned string from that function will be placed on the 
-template.
-
 /+ ---------------------------------------------------- */
 
-// Template.mytemplate.events = ({
-//   'click .someclass' : function(event, template) { return false; }
-// });
 
-// Template.header.helpers({
+Template.header.events = ({
 
-// });
+});
+
+Template.header.helpers({
+  homepageMenuActive: function(){
+    var current = Router.current();
+    if( current && current.path === '/homepage' ){
+      return "active";
+    }
+  },
+  contentMenuActive: function(){
+    var current = Router.current();
+    if( current && current.path === '/content' ){
+      return "active";
+    }
+  },
+  aboutMenuActive: function(){
+    var current = Router.current();
+    if( current && current.path === '/about' ){
+      return "active";
+    }
+  },
+  projectsMenuActive: function(){
+    var current = Router.current();
+    if( current && current.path === '/projects' ){
+      return "active";
+    }
+  },
+});
 
 // Template.mytemplate.rendered = function() {
 //   // Called once the template is rendered - once and only once.
 //   // https://github.com/meteor/meteor/wiki/Using-Blaze#rendered-callback-only-fires-once
 
 // };
+
+
+
 

@@ -20,7 +20,9 @@ Router.map(function() {
     },
     data: function () {
       var projectsCount = Projects.find({name: { $regex: Session.get('projectFilter'), $options: 'i' }}).count();
-      Session.set('paginationCount', Math.floor((projectsCount - 1) / Session.get('tableLimit')) + 1);
+      var paginationCount = Math.floor((projectsCount - 1) / Session.get('tableLimit')) + 1;
+      Session.set('paginationCount', paginationCount);
+
       return {
         projects: Projects.find(
           {name: { $regex: Session.get('projectFilter'), $options: 'i' }},
@@ -58,47 +60,48 @@ Template.projects.helpers({
       return [];
     }
   },
-  // isTenActive: function(){
-  //   if(Session.get('tableLimit') === 2){
-  //     return "active";
-  //   }
-  // },
-  // isTwentyActive: function(){
-  //   if(Session.get('tableLimit') === 4){
-  //     return "active";
-  //   }
-  // },
-  // isFiftyActive: function(){
-  //   if(Session.get('tableLimit') === 6){
-  //     return "active";
-  //   }
-  // },
-  // isHundredActive: function(){
-  //   if(Session.get('tableLimit') === 12){
-  //     return "active";
-  //   }
-  // },
   countOfProjects: function(){
-    var count = Projects.find().count();
-    var msg = 'You have access to ' + count;
-    if ( count == 1 )
-      msg += ' project';
-    else
-      msg += ' projects';
+    var count = Projects.find({name: { $regex: Session.get('projectFilter'), $options: 'i' }}).count();
+    var tableLimit = Session.get('tableLimit');
+    var selectedPagination = Session.get('selectedPagination');
+    var skipCount = Session.get('skipCount');
+    var from = skipCount + 1;
+    var upto = (selectedPagination + 1) * tableLimit;
+
+    if ( upto > count ) upto = count;
+    if ( count === 0 ) return 'No projects found';
+
+    var msg = 'Showing ' + from + ' to ' + upto+ ' of ' + count + ' project';
+    if ( count > 1 || count === 0 ) msg += 's';
     return msg;
-  }  
+  },
+  isPaginationVisible: function(){
+    if( Session.get('paginationCount') < 2 ){
+      return "hidden";
+    }
+  },
+  isLeftArrowDisabled: function(){
+    if( Session.get('selectedPagination') === 0 ){
+      return "disabled";
+    }
+  },
+  isRightArrowDisabled: function(){
+    if( Session.get('selectedPagination') + 1 === Session.get('paginationCount') ){
+      return "disabled";
+    }
+  }
 });
 
 Template.projects.rendered = function () {
-  //
+
 };
 
 Template.projects.events({
   'click .goto-createproject': function (event, template) {
     var self = this;
     Router.go('createproject');
-  },  
-
+    return false;
+  },
   'click .project.remove': function (event, template) {
     var project = this;
     Meteor.call('removeProject', project, function(error, result){
@@ -122,31 +125,26 @@ Template.projects.events({
     Session.set('projectFilter', $('#projectFilter').val());
     Session.set('skipCount', 0);
     Session.set('selectedPagination', 0);
+    return false;
   },
-  // 'click .tableLimit':function(){
-  //   // The value of the item clicked upon
-  //   var thisLimit = $(event.target).text();
-  //   // We only need to reset when the limit has actiually changed
-  //   if ( Session.get('tableLimit') != thisLimit ) { // Note. Don't use !== here as the types are different. string vs. number
-  //     Session.set('skipCount', 0);
-  //     Session.set('selectedPagination', 0);
-  //   }
-  // },
-  // 'click #tenButton':function(){
-  //   Session.set('tableLimit', 2);
-  // },
-  // 'click #twentyButton':function(){
-  //   Session.set('tableLimit', 4);
-  // },
-  // 'click #fiftyButton': function(){
-  //   Session.set('tableLimit', 6);
-  // },
-  // 'click #hundredButton': function(){
-  //   Session.set('tableLimit', 12);
-  // },
-  'click .pagination.item':function(){
+  'click .left.pagination.arrow': function (event, template) {
+    var selectedPagination = Session.get('selectedPagination');
+    var newPagination = selectedPagination - 1;
+    Session.set('selectedPagination', newPagination);
+    Session.set('skipCount', newPagination * Session.get('tableLimit'));
+    return false;
+  },
+  'click .right.pagination.arrow': function (event, template) {
+    var selectedPagination = Session.get('selectedPagination');
+    var newPagination = selectedPagination + 1;
+    Session.set('selectedPagination', newPagination);
+    Session.set('skipCount', newPagination * Session.get('tableLimit'));
+    return false;
+  },
+  'click .pagination.number':function(){
     Session.set('selectedPagination', this.index);
     Session.set('skipCount', this.index * Session.get('tableLimit'));
+    return false;
   },
 });
 
